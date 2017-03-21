@@ -14,7 +14,7 @@ object FileIO {
     .getLines().drop(1)
     .foreach(line => {
       val Array(customerId, date, creditCard, cvv, category) = line.split(",").map(_.trim)
-      purchases += new Purchase(customerId, date, creditCard, cvv, category)
+      purchases += Purchase(customerId, date, creditCard, cvv, category)
     })
 
   def prompt(promptMsg: String) = {
@@ -22,9 +22,10 @@ object FileIO {
     io.StdIn.readLine()
   }
 
-  case object searchItemAndPrintToFile {
+  def searchItemAndPrintToFile {
     val search = prompt(s"\nPlease enter your search category (Furniture, Alcohol, Toiletries, Shoes, Food, Jewelry):\n")
     val results = purchases.filter(_.category.equals(search))
+    results.foreach(line => println(line))
     val f = new File("filtered_purchases.prn")
     val fw = new FileWriter(f)
     fw.write(results.mkString("\n"))
