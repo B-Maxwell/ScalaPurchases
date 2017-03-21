@@ -3,7 +3,7 @@ import scala.collection.mutable
 import scala.io.Source
 
 case class Purchase(customerId: String, date: String, creditCard: String, cvv: String, category: String) {
-  override def toString = s"Customer: ${customerId}, Date: ${date}"
+  override def toString = s"Customer: ${customerId}, Date: ${date}\n"
 }
 
 object FileIO {
@@ -18,21 +18,18 @@ object FileIO {
     })
 
   def prompt(promptMsg: String) = {
-    println(promptMsg);
+    println(promptMsg)
     io.StdIn.readLine()
   }
 
-  def searchItemAndPrintToFile {
-    val search = prompt(s"\nPlease enter your search category (Furniture, Alcohol, Toiletries, Shoes, Food, Jewelry):\n")
-    val results = purchases.filter(_.category.equals(search))
-    results.foreach(line => println(line))
-    val f = new File("filtered_purchases.prn")
-    val fw = new FileWriter(f)
-    fw.write(results.mkString("\n"))
-    fw.close()
-  }
-
   def main(args: Array[String]): Unit = {
-    searchItemAndPrintToFile
+    val search = prompt(s"\nPlease enter your search category (Furniture, Alcohol, Toiletries, Shoes, Food, Jewelry):\n")
+    val results = purchases.filter(_.category == search)
+    val fw = new FileWriter(new File("filtered_purchases.prn"))
+    results.foreach(line => {
+      println(line)
+      fw.write(line.toString)
+    })
+    fw.close()
   }
 }
